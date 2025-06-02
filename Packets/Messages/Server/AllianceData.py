@@ -42,8 +42,8 @@ class AllianceData(Writer):
                         level = len(RequiredExps)
                     self.writeVInt(level)
                     self.writeVInt(memberData["trophies"]) # trophies
-                    self.writeVInt(0) # state
-                    self.writeVInt(0) # last connection time
+                    self.writeVInt(memberData["player_status"]) # state (0: offline, 1: online, 2: last seen more then a month ago, 3+: nothing)
+                    self.writeVInt(int(time.time()) - memberData["last_connection_time"]) # last connection time
                     self.writeDataReference(28, memberData["profile_icon"])
 
                 

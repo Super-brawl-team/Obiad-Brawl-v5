@@ -1,6 +1,7 @@
 import socket
 import json
 import traceback
+import time
 from Cryptography.nacl import NaCl
 from threading import Thread, Lock
 from Packets.Factory import *
@@ -123,6 +124,7 @@ class ClientThread(Thread):
 
             with client_count_lock:
                 db.replaceValue("player_status", 0)
+                db.replaceValue("last_connection_time", int(time.time()))
                 if self.player.club_id !=0:
                     db.onlineMembers(self.player.club_id, -1)
                 if self.player.teamID != 0:

@@ -110,7 +110,6 @@ class Cards:
             next(csv_reader)
             for count, row in enumerate(csv_reader, start=0):
                 if row[6] == 'unlock' and row[10] == rarity:
-                    print(row[0])
                     if not Characters().isDisabled(row[3]):
                         BrawlersID.append(count)
                 count += 1

@@ -31,9 +31,9 @@ class LogicConfData:
         self.writeVInt(self.brawlersTrophies) # Minimum Brawler Trophies For Season Reset
         self.writeVInt(50) # Brawler Trophy Loss Percentage in Season Reset
         self.writeVInt(9999) # Coin Limit Remaining
-        self.writeArrayVInt([1,2,5,10,20,60]) # Duplicated Brawler Chips
-        self.writeArrayVInt([3,10,20,60,200,500]) # Brawler Chip Cost
-        self.writeArrayVInt([15,30,80,170,350,700,2147483647]) # Boxes With Guaranteed Brawlers Cost
+        self.encodeIntList([1,2,5,10,20,60]) # Duplicated Brawler Chips
+        self.encodeIntList([3,10,20,60,200,500]) # Brawler Chip Cost
+        self.encodeIntList([15,30,80,170,350,700,2147483647]) # Boxes With Guaranteed Brawlers Cost
         # Events array starts
 
         # Brawlers required for events starts
@@ -63,7 +63,7 @@ class LogicConfData:
             self.writeVInt(999) # coins to win
             self.writeBoolean(False) # double coins
             self.writeBoolean(index == 3) # double exp
-            self.writeScID(15, events["ID"]) # map
+            self.writeDataReference(15, events["ID"]) # map
             self.writeVInt(0) #  coins already collected
             self.writeVInt(2) #  coins collected statut
             self.writeString("Server by PrimoDEVHacc") # text for event (TID) please keep it for credits
@@ -88,18 +88,18 @@ class LogicConfData:
             self.writeVInt(999) # coins to win
             self.writeBoolean(False) # double coins
             self.writeBoolean(index == 3) # double exp
-            self.writeScID(15, events["ID"]) # map
+            self.writeDataReference(15, events["ID"]) # map
             self.writeVInt(0) #  coins already collected
             self.writeVInt(2) #  coins collected statut
             self.writeString("Server by PrimoDEVHacc") # text for event (TID) please keep it for credits
             self.writeBoolean(False)
-            self.writeVInt(9999) # tickets
+            self.writeVInt(self.player.tickets) # tickets
             index += 1
         # comming soon event ends
             
         # Events array ends
 
-        self.writeArrayVInt([1]) # unknown
-        self.writeArrayVInt([self.settings["ticketsPrice"]]) # Event Tickets Amount
+        self.encodeIntList([1]) # unknown
+        self.encodeIntList([self.settings["ticketsPrice"]]) # Event Tickets Amount
 
         Milestones.MilestonesArray(self)

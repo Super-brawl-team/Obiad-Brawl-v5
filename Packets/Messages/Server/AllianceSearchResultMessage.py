@@ -13,7 +13,7 @@ class AllianceSearchResultMessage(Writer):
            def encode(self):
                 db = DataBase(self.player)
                 self.writeString(self.fields["RequestedName"])
-                self.writeVint(len(self.count))
+                self.writeVInt(len(self.count))
                 for club in self.count:
                     self.writeLong(0, club["info"]["clubID"]) # club id
                     self.writeString(club["info"]["name"])

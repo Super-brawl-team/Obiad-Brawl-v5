@@ -111,10 +111,10 @@ class LoginMessage(ByteStream):
                 OwnHomeDataMessage(self.device, self.player).Send()
                 
                 ClanStream(self.device, self.player).Send()
-                if self.player.club_id:
+                if self.player.club_id != 0:
                     db.onlineMembers(self.player.club_id, 1)
+                    AllianceTeamsMessage(self.device, self.player).Send()
                 MyAlliance(self.device, self.player).Send()  # 14109
-                AllianceTeamsMessage(self.device, self.player).Send()
                 FriendListMessage(self.device, self.player).Send()
                 if self.player.teamID != 0:
                     if db.getGameroomInfo("info") != None:

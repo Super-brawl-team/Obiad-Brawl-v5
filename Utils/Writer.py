@@ -45,7 +45,7 @@ class Writer:
             self.offset += length
         else:
             Writer.writeIntToByteArray(self, -1)
-    def writeArrayVInt(self, values):
+    def encodeIntList(self, values):
         self.writeVInt(len(values))
         for x in values:
            self.writeVInt(x)
@@ -129,66 +129,7 @@ class Writer:
         self.writeIntToByteArray(high)
         self.writeIntToByteArray(low)
    
-    def writeVint(self, data):
-        self.bitoffset = 0
-        if type(data) == str:
-            data = int(data)
-        final = b''
-        if (data & 2147483648) != 0:
-            if data >= -63:
-                final += (data & 0x3F | 0x40).to_bytes(1, 'big', signed=False)
-                self.offset += 1
-            elif data >= -8191:
-                final += (data & 0x3F | 0xC0).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F).to_bytes(1, 'big', signed=False)
-                self.offset += 2
-            elif data >= -1048575:
-                final += (data & 0x3F | 0xC0).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 13) & 0x7F).to_bytes(1, 'big', signed=False)
-                self.offset += 3
-            elif data >= -134217727:
-                final += (data & 0x3F | 0xC0).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 13) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 20) & 0x7F).to_bytes(1, 'big', signed=False)
-                self.offset += 4
-            else:
-                final += (data & 0x3F | 0xC0).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 13) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 20) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 27) & 0xF).to_bytes(1, 'big', signed=False)
-                self.offset += 5
-        else:
-            if data <= 63:
-                final += (data & 0x3F).to_bytes(1, 'big', signed=False)
-                self.offset += 1
-            elif data <= 8191:
-                final += (data & 0x3F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F).to_bytes(1, 'big', signed=False)
-                self.offset += 2
-            elif data <= 1048575:
-                final += (data & 0x3F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 13) & 0x7F).to_bytes(1, 'big', signed=False)
-                self.offset += 3
-            elif data <= 134217727:
-                final += (data & 0x3F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 13) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 20) & 0x7F).to_bytes(1, 'big', signed=False)
-                self.offset += 4
-            else:
-                final += (data & 0x3F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 6) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 13) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 20) & 0x7F | 0x80).to_bytes(1, 'big', signed=False)
-                final += ((data >> 27) & 0xF).to_bytes(1, 'big', signed=False)
-                self.offset += 5
 
-        self.buffer += final  
-            
     def writeVInt(self, data):
         self.bitoffset = 0
         if type(data) == str:
@@ -290,11 +231,6 @@ class Writer:
             Debugger.warning(f"ByteStream::writeString invalid string length {str_length}")
             Writer.writeIntToByteArray(self, -1)
             
-    def writeScID(self, high=0, low=-1):
-        ByteStreamHelper.writeDataReference(self, high, low)  
-            
-    def writeScId(self, high=0, low=-1):
-        ByteStreamHelper.writeDataReference(self, high, low)  
     #def  writePackedBoolean(self, data):
         #v5 = 0
         #v6 = 0
@@ -320,23 +256,7 @@ class Writer:
         self.bitoffset = self.bitoffset + 1 & 7
         self.buffer = bytes(tempBuf)
             
-    def writeBool(self, value):
-        ChecksumEncoder.writeBoolean(self, value & 1)
-        tempBuf = list(self.buffer)
-        if self.bitoffset == 0:
-            offset = self.offset
-            self.offset += 1
-            tempBuf.append(0)
-        if (value & 1) != 0:
-            tempBuf[self.offset - 1] = tempBuf[self.offset - 1] | 1 << (self.bitoffset & 31)
-        self.bitoffset = self.bitoffset + 1 & 7
-        self.buffer = bytes(tempBuf)
-            
-    def writeArrayVInt(self, data):
-        self.writeVInt(len(data))
-        for x in data:
-            self.writeVInt(x)
-    
+
     def writeVLong(self, high, low):
         ChecksumEncoder.writeVLong(self, high, low)
         self.bitoffset = 0

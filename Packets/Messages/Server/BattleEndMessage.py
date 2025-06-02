@@ -120,11 +120,11 @@ class BattleEndMessage(Writer):
 		self.writeVInt(coins) # Coins Gained
 		self.writeVInt(6969) # "All Coins collected" if 0, its basically coins left
 		self.writeVInt(0) # First Win Coins Gained
-		self.writeBool(False) # "All event experience collected" if True
+		self.writeBoole(False) # "All event experience collected" if True
 		self.writeVInt(self.plrs["BattleRank"] if self.plrs["Gamemode"] in ("BattleRoyaleTeam", "BattleRoyale") else self.plrs["BattleEndType"]) # Result (Victory/Defeat/Draw/Rank Score)
 
 		self.writeVInt(trophies) # Trophies Result
-		self.writeScID(28, self.player.profile_icon)  # Player Profile Icon
+		self.writeDataReference(28, self.player.profile_icon)  # Player Profile Icon
 		self.writeBoolean(False) # idk
 		self.writeBoolean(self.plrs["isInRealGame"]) # is in real game
 		self.writeBoolean(self.player.tutorialState < 2) # tutorial
@@ -141,8 +141,8 @@ class BattleEndMessage(Writer):
 			self.writeBoolean(Players["IsPlayer"]) # is player
 			self.writeBoolean(Players["Team"] is not self.plrs["Brawlers"][0]["Team"]) # is ennemy?
 			self.writeBoolean(Players["IsPlayer"]) # is star player
-			self.writeScID(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
-			self.writeScID(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
+			self.writeDataReference(Players["CharacterID"][0], Players["CharacterID"][1]) # Player Brawler
+			self.writeDataReference(Players["SkinID"][0], Players["SkinID"][1]) # Player Brawler Skin!
 			self.writeVInt(Players["trophies"]+6974) # Brawler Trophies
 			self.writeVInt(Players["powerLevel"]) # Brawler power level
 		# Experience Array
@@ -205,32 +205,32 @@ class BattleEndMessage(Writer):
 			self.writeDataReference(5, 1)
 			self.writeVInt(0)
 		for milestone in range(milestonesTrophies):
-			self.writeVint(1)
-			self.writeVint(0)
-			self.writeVint(0) # Progress Start
-			self.writeVint(0) # Progress
-			self.writeVint(0)
-			self.writeVint(1)
-			self.writeVint(1)
-			self.writeVint(10)
+			self.writeVInt(1)
+			self.writeVInt(0)
+			self.writeVInt(0) # Progress Start
+			self.writeVInt(0) # Progress
+			self.writeVInt(0)
+			self.writeVInt(1)
+			self.writeVInt(1)
+			self.writeVInt(10)
 			self.writeDataReference(5,1)
 			self.writeVInt(0)
 		for milestone in range(milestoneslevel):
-			self.writeVint(6) # Type
-			self.writeVint(0) # Index
-			self.writeVint(0) # Progress Start
-			self.writeVint(0) # Progress
-			self.writeVint(0) # Data Reference
-			self.writeVint(1) # Primary Level Up Reward Count
+			self.writeVInt(6) # Type
+			self.writeVInt(0) # Index
+			self.writeVInt(0) # Progress Start
+			self.writeVInt(0) # Progress
+			self.writeVInt(0) # Data Reference
+			self.writeVInt(1) # Primary Level Up Reward Count
 			for x in range(1):
-				self.writeVint(13) # Primary Level Up Reward Type
-				self.writeVint(Milestones.PrimaryLvlUpRewardCount[selectedIndex]) # Primary Level Up Reward Count
-				self.writeScId(5, 1) # Primary Level Up Reward Resource
-			self.writeVint(1) # Secondary Level Up Reward Count
+				self.writeVInt(13) # Primary Level Up Reward Type
+				self.writeVInt(Milestones.PrimaryLvlUpRewardCount[selectedIndex]) # Primary Level Up Reward Count
+				self.writeDataReference(5, 1) # Primary Level Up Reward Resource
+			self.writeVInt(1) # Secondary Level Up Reward Count
 			for x in range(1):
-				self.writeVint(13) # Secondary Level Up Reward Type
-				self.writeVint(Milestones.SecondaryLvlUpRewardCount[selectedIndex]) # Secondary Level Up Reward Count
-				self.writeScId(5, 1) # Secondary Level Up Reward Resource
+				self.writeVInt(13) # Secondary Level Up Reward Type
+				self.writeVInt(Milestones.SecondaryLvlUpRewardCount[selectedIndex]) # Secondary Level Up Reward Count
+				self.writeDataReference(5, 1) # Secondary Level Up Reward Resource
 				self.player.gold += Milestones.SecondaryLvlUpRewardCount[selectedIndex]
 				db.replaceValue("gold", self.player.gold)
 
@@ -247,7 +247,7 @@ class BattleEndMessage(Writer):
 		self.writeVInt(self.player.player_experience) # Player Experience for Level
 
 		# Milestones Array
-		self.writeBool(True) # Bool
+		self.writeBoolean(True) # Bool
 
 		Milestones.MilestonesArray(self)
 		self.player.trophies += trophies

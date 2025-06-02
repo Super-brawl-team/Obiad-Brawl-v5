@@ -43,7 +43,7 @@ class Locations:
                 if line_count == 0 or line_count == 1:
                     line_count += 1
                 else:
-                    if row[1].lower() != 'true' and row[14] in gamemode:
+                    if row[1].lower() != 'true' and row[13] in gamemode:
                         BrawlersID.append(line_count - 2)
                     line_count += 1
 
@@ -62,7 +62,7 @@ class Locations:
                 if line_count == 0 or line_count == 1:
                     line_count += 1
                 else:
-                    if row[1].lower() != 'true' and row[14] not in gamemode:
+                    if row[1].lower() != 'true' and row[13] not in gamemode:
                         BrawlersID.append(line_count - 2)
                     line_count += 1
 

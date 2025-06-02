@@ -17,6 +17,6 @@ class OwnHomeDataMessage(Writer):
 		LogicClientHome.encode(self, self.player)
 		LogicClientAvatar.encode(self, self.player)
 		self.writeVInt(2017189) # dudka timestamps from hell
-		self.player.player_status = 2
+		self.player.player_status = 1
 		db.replaceValue("player_status", self.player.player_status)
 		

@@ -106,11 +106,13 @@ class LogicGiveDeliveryItemsCommand(Writer):
           rewardsAmount = 10
        else:
           rewardsAmount = 1
+       hasBonus =random.choices([0, 1], weights=[90, 10], k=1)[0]
+       print(hasBonus)
        self.rewards["rewards"] = {}
        for reward in range(rewardsAmount):
           self.rewards["rewards"][reward] = {}
           self.rewards["rewards"][reward]["upgrade"] = 0
-          self.rewards["rewards"][reward]["rarity"] = random.choices([0, 1, 2, 3, 4, 5], weights=[25, 20, 15, 12, 8, 5], k=1)[0]
+          self.rewards["rewards"][reward]["rarity"] = random.choices([0, 1, 2, 3, 4, 5], weights=[50, 25, 12, 6, 3, 1] , k=1)[0]
           if self.rewards["rewards"][reward]["rarity"] == 0:
              rewardList = ["Brawler", "Upgrades"]
              selectedReward = random.choices(rewardList, weights= [10, 90], k=1)[0]
@@ -135,7 +137,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
                   self.player.unlocked_brawlers[rewardBrawler]["PowerLevel"]+=1
                   db.replaceValue("unlocked_brawlers", self.player.unlocked_brawlers)
              else:
-                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("common") if Cards().getbrawlerID(char) not in self.player.unlocked_brawlers]
+                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("common") if str(Cards().getbrawlerID(char)) not in self.player.unlocked_brawlers]
                 selectedCharacter = random.choice(selectedCharacters)
                 self.rewards["rewards"][reward]["amount"] = 1
                 self.rewards["rewards"][reward]["dataref"] = [16, Cards().getbrawlerID(selectedCharacter)]
@@ -177,7 +179,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
                   self.player.unlocked_brawlers[rewardBrawler]["PowerLevel"]+=2
                   db.replaceValue("unlocked_brawlers", self.player.unlocked_brawlers)
              else:
-                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("rare") if Cards().getbrawlerID(char) not in self.player.unlocked_brawlers]
+                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("rare") if str(Cards().getbrawlerID(char)) not in self.player.unlocked_brawlers]
                 selectedCharacter = random.choice(selectedCharacters)
                 self.rewards["rewards"][reward]["amount"] = 1
                 self.rewards["rewards"][reward]["dataref"] = [16, Cards().getbrawlerID(selectedCharacter)]
@@ -236,7 +238,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
                     self.player.coinsbooster += 259200
                     db.replaceValue('coinsbooster', self.player.coinsbooster)
              else:
-                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("super_rare") if Cards().getbrawlerID(char) not in self.player.unlocked_brawlers]
+                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("super_rare") if str(Cards().getbrawlerID(char)) not in self.player.unlocked_brawlers]
                 selectedCharacter = random.choice(selectedCharacters)
                 self.rewards["rewards"][reward]["amount"] = 1
                 self.rewards["rewards"][reward]["dataref"] = [16, Cards().getbrawlerID(selectedCharacter)]
@@ -277,7 +279,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
                   self.player.unlocked_brawlers[rewardBrawler]["PowerLevel"]+=4
                   db.replaceValue("unlocked_brawlers", self.player.unlocked_brawlers)
              else:
-                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("epic") if Cards().getbrawlerID(char) not in self.player.unlocked_brawlers]
+                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("epic") if str(Cards().getbrawlerID(char)) not in self.player.unlocked_brawlers]
                 selectedCharacter = random.choice(selectedCharacters)
                 self.rewards["rewards"][reward]["amount"] = 1
                 self.rewards["rewards"][reward]["dataref"] = [16, Cards().getbrawlerID(selectedCharacter)]
@@ -317,7 +319,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
                   self.player.unlocked_brawlers[rewardBrawler]["PowerLevel"]+=8
                   db.replaceValue("unlocked_brawlers", self.player.unlocked_brawlers)
              else:
-                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("mega_epic") if Cards().getbrawlerID(char) not in self.player.unlocked_brawlers]
+                selectedCharacters = [char for char in Cards().getBrawlersWithRarity("mega_epic") if str(Cards().getbrawlerID(char)) not in self.player.unlocked_brawlers]
                 selectedCharacter = random.choice(selectedCharacters)
                 self.rewards["rewards"][reward]["amount"] = 1
                 self.rewards["rewards"][reward]["dataref"] = [16, Cards().getbrawlerID(selectedCharacter)]
@@ -337,7 +339,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
                    db.replaceValue('unlocked_brawlers', self.player.unlocked_brawlers)
                    self.rewards["rewards"][reward]["rewardID"] = 1
           elif self.rewards["rewards"][reward]["rarity"] == 5:
-            selectedCharacters = [char for char in Cards().getBrawlersWithRarity("legendary") if Cards().getbrawlerID(char) not in self.player.unlocked_brawlers]
+            selectedCharacters = [char for char in Cards().getBrawlersWithRarity("legendary") if str(Cards().getbrawlerID(char)) not in self.player.unlocked_brawlers]
             selectedCharacter = random.choice(selectedCharacters)
             self.rewards["rewards"][reward]["amount"] = 1
             self.rewards["rewards"][reward]["dataref"] = [16, Cards().getbrawlerID(selectedCharacter)]
@@ -357,6 +359,17 @@ class LogicGiveDeliveryItemsCommand(Writer):
                db.replaceValue('unlocked_brawlers', self.player.unlocked_brawlers)
                self.rewards["rewards"][reward]["rewardID"] = 1
           db.loadAccount()
+       if hasBonus:
+          reward =  rewardsAmount
+          amount = random.choices([0, 1, 2, 3], weights=[50, 25, 19, 6], k=1)[0]
+          self.rewards["rewards"][reward] = {}
+          self.rewards["rewards"][reward]["rarity"] = amount
+          self.rewards["rewards"][reward]["amount"] = amount+1
+          self.rewards["rewards"][reward]["dataref"] = [16, 0]
+          self.rewards["rewards"][reward]["rewardID"] = 6
+          self.rewards["rewards"][reward]["upgrade"] = 0
+          self.player.tickets += 1
+          db.replaceValue("tickets", self.player.tickets)
        return self.rewards
     def encode(self, rewards):
           self.rewards = rewards
@@ -365,8 +378,7 @@ class LogicGiveDeliveryItemsCommand(Writer):
           for reward in self.rewards["rewards"]:
             self.writeVInt(self.rewards["rewards"][reward]["rarity"]) # rarity
             self.writeVInt(self.rewards["rewards"][reward]["amount"]) # amount
-            self.writeScID(self.rewards["rewards"][reward]["dataref"][0], self.rewards["rewards"][reward]["dataref"][1]) # item type
-
+            self.writeDataReference(self.rewards["rewards"][reward]["dataref"][0], self.rewards["rewards"][reward]["dataref"][1]) # item type
             self.writeVInt(self.rewards["rewards"][reward]["rewardID"]) # item given
             self.writeVInt(self.rewards["rewards"][reward]["upgrade"]) # skull
             

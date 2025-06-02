@@ -32,9 +32,9 @@ class TeamMessage(Writer):
             self.writeVInt(1) # Unk, is this a timestamp
             self.writeBoolean(gameroomInfo["advertiseToBand"]) # advertise to friends
             self.writeVLong(gameroomInfo["map_slot"][0], gameroomInfo["map_slot"][1])
-            self.writeScID(15, gameroomInfo["map_id"]) # Location ID
+            self.writeDataReference(15, gameroomInfo["map_id"]) # Location ID
             self.playerCount = gameroomInfo["player_count"]
-            self.writeVint(self.playerCount)
+            self.writeVInt(self.playerCount)
             for player, values in gameroomInfo["players"].items():
                 playerToken = db.getTokenByLowId(gameroomInfo["players"][player]["low_id"])
                 playersData = (db.getSpecifiedPlayers([playerToken]))[0]
@@ -43,8 +43,8 @@ class TeamMessage(Writer):
                 
                 self.writeString(gameroomInfo["players"][player]["name"]) # Player Name
                 self.writeVInt(69) # Player Experience Level (unused)
-                self.writeScID(16, gameroomInfo["players"][player]["brawler_id"]) # Player Brawler
-                self.writeScID(0, 1) # Player Skin
+                self.writeDataReference(16, gameroomInfo["players"][player]["brawler_id"]) # Player Brawler
+                self.writeDataReference(0, 1) # Player Skin
                 brawler_id = str(gameroomInfo["players"][player]["brawler_id"])
                 self.writeVInt(playersData["unlocked_brawlers"][brawler_id]["Trophies"]) # Brawler Trophies
                 self.writeVInt(playersData["unlocked_brawlers"][brawler_id]["HighestTrophies"]) # Brawler Trophies for Rank

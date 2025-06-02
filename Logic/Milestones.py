@@ -23,20 +23,20 @@ class Milestones:
         for MilestoneIndex in range(Goal0Index):
           
                 
-                self.writeVint(1)
-                self.writeVint(MilestoneIndex)
+                self.writeVInt(1)
+                self.writeVInt(MilestoneIndex)
                 if MilestoneIndex >= 34:
                   self.writeVInt(Milestones.ProgressStartTrophies[33]+50*(MilestoneIndex - 33))
                 else:
-                  self.writeVint(Milestones.ProgressStartTrophies[MilestoneIndex]) # Progress Start
+                  self.writeVInt(Milestones.ProgressStartTrophies[MilestoneIndex]) # Progress Start
                 if MilestoneIndex >= 34:
                   self.writeVInt(50)
                 else:
-                  self.writeVint(Milestones.ProgressTrophies[MilestoneIndex]) # Progress
-                self.writeVint(0)
-                self.writeVint(1)
-                self.writeVint(1)
-                self.writeVint(10)
+                  self.writeVInt(Milestones.ProgressTrophies[MilestoneIndex]) # Progress
+                self.writeVInt(0)
+                self.writeVInt(1)
+                self.writeVInt(1)
+                self.writeVInt(10)
                 self.writeDataReference(5, 1)
                 self.writeVInt(0)
         # Trophies Milestones End
@@ -56,20 +56,20 @@ class Milestones:
             self.writeVInt(0) 
        
         for MilestoneIndex in range(Goal6Index):
-            self.writeVint(6) # Type
-            self.writeVint(MilestoneIndex) # Index
-            self.writeVint(Milestones.ProgressStart[MilestoneIndex]) # Progress Start
-            self.writeVint(Milestones.Progress[MilestoneIndex]) # Progress
-            self.writeVint(0) # Data Reference
-            self.writeVint(1) # Primary Level Up Reward Count
+            self.writeVInt(6) # Type
+            self.writeVInt(MilestoneIndex) # Index
+            self.writeVInt(Milestones.ProgressStart[MilestoneIndex]) # Progress Start
+            self.writeVInt(Milestones.Progress[MilestoneIndex]) # Progress
+            self.writeVInt(0) # Data Reference
+            self.writeVInt(1) # Primary Level Up Reward Count
             for x in range(1):
-                self.writeVint(13) # Primary Level Up Reward Type
-                self.writeVint(Milestones.PrimaryLvlUpRewardCount[MilestoneIndex]) # Primary Level Up Reward Count
+                self.writeVInt(13) # Primary Level Up Reward Type
+                self.writeVInt(Milestones.PrimaryLvlUpRewardCount[MilestoneIndex]) # Primary Level Up Reward Count
                 self.writeScId(5, 1) # Primary Level Up Reward Resource
-            self.writeVint(1) # Secondary Level Up Reward Count
+            self.writeVInt(1) # Secondary Level Up Reward Count
             for x in range(1):
-                self.writeVint(13) # Secondary Level Up Reward Type
-                self.writeVint(Milestones.SecondaryLvlUpRewardCount[MilestoneIndex]) # Secondary Level Up Reward Count
+                self.writeVInt(13) # Secondary Level Up Reward Type
+                self.writeVInt(Milestones.SecondaryLvlUpRewardCount[MilestoneIndex]) # Secondary Level Up Reward Count
                 self.writeScId(5, 1) # Secondary Level Up Reward Resource
     
         

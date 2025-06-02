@@ -11,7 +11,7 @@ class JoinableAlliancesListMessage(Writer):
            def encode(self):
                 db = DataBase(self.player)
                 clubs =  db.countClubs(1, 100, 2, 50)
-                self.writeVint(len(clubs[0]))
+                self.writeVInt(len(clubs[0]))
                 for club in clubs[1]:
                     
                     self.writeLong(0, club["info"]["clubID"]) # club id

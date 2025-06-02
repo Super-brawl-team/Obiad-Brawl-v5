@@ -56,8 +56,8 @@ class LeaderboardMessage(Writer):
 				self.writeDataReference(8, entry["clubBadge"]) # Club Badge
 
 
-		self.writeVint(0)
-		self.writeVint(self.indexOfPlayer)
-		self.writeVint(0)
-		self.writeVint(0) # Leaderboard Region
+		self.writeVInt(0)
+		self.writeVInt(self.indexOfPlayer)
+		self.writeVInt(0)
+		self.writeVInt(0) # Leaderboard Region
 		self.writeString(self.player.region)

@@ -29,4 +29,4 @@ class AllianceChatServer(Writer):
                self.writeVInt(message["EventType"])
                StreamEntryFactory.createStreamEntryByType(self, message)
           else:
-               self.writeVint(0)  # No messages
+               self.writeVInt(0)  # No messages

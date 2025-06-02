@@ -11,8 +11,8 @@ class LogicClientAvatar:
         for id in range(3):
             self.writeLogicLong(self.player.high_id, self.player.low_id) # Player ids related to home menu
 
-        self.writeString(self.player.name)
-        self.writeBool(self.player.name != "Brawler") # nameSet
+        self.writeStringReference(self.player.name)
+        self.writeBoolean(self.player.name != "Brawler") # nameSet
         self.writeInt(1) # Player region ?
 
         # motorised arrays stars 
@@ -26,7 +26,7 @@ class LogicClientAvatar:
 
         # ressources
         for res in range(len(ressources_ids)):
-            self.writeScID(5, ressources_ids[res]) # resource 
+            self.writeDataReference(5, ressources_ids[res]) # resource 
             self.writeVInt(ressources[res]) # count
             
         # cards and ressources Array End

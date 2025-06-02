@@ -56,14 +56,14 @@ class Writer:
 
 
     def writeLogicLong(self, data1, data2):
-        self.writeVint(data1)
-        self.writeVint(data2)
+        self.writeVInt(data1)
+        self.writeVInt(data2)
     
     
     def writeArrayVint(self, data):
-        self.writeVint(len(data))
+        self.writeVInt(len(data))
         for x in data:
-            self.writeVint(x)
+            self.writeVInt(x)
 
 
     def writeUInt8(self, integer: int):
@@ -162,7 +162,7 @@ class Writer:
 
         
 
-    def writeVinte(self, data, rotate: bool = True):
+    def writeVInte(self, data, rotate: bool = True):
         final = b''
         if data == 0:
             self.writeByte(0)
@@ -273,7 +273,7 @@ class Writer:
         
         self.buffer += data
     
-    def writeVint(self, value):
+    def writeVInt(self, value):
         v2 = value
         ChecksumEncoder.writeVInt(self, value)
         if type(value) == str:
@@ -360,7 +360,7 @@ class Writer:
 
         encoded = string.encode('utf-8')
         self.writeInt16(0)
-        self.writeVint(len(encoded))
+        self.writeVInt(len(encoded))
         self.buffer += encoded
 
     def writeByte(self, data):
@@ -383,18 +383,18 @@ class Writer:
         self.writeInt(data, 2)
 
     def writeScId(self, x, y):
-        self.writeVint(x)
-        self.writeVint(y)
+        self.writeVInt(x)
+        self.writeVInt(y)
         
     def writeScID(self, x, y):
-        self.writeVint(x)
-        self.writeVint(y)
+        self.writeVInt(x)
+        self.writeVInt(y)
     
     def writeDataReference(self, x, y):
-        self.writeVint(x)
-        self.writeVint(y)
+        self.writeVInt(x)
+        self.writeVInt(y)
         
         
     
     def writeNullVint(self):
-        self.writeVint(-1)
+        self.writeVInt(-1)

@@ -16,7 +16,7 @@ class LogicDailyData:
         self.writeVInt(self.player.trophieRank)
         self.writeVInt(self.player.player_experience)  # Experience
 
-        self.writeScID(28, self.player.profile_icon)  # Player Icon
+        self.writeDataReference(28, self.player.profile_icon)  # Player Icon
         self.writeVInt(7) # Played Game Modes Count
         for x in range(7): 
             self.writeVInt(x) # Played Game Mode
@@ -37,13 +37,13 @@ class LogicDailyData:
         for skin in non_zero_skins:
             self.writeDataReference(29, skin)
 
-        self.writeBool(False) # is time required to create new Band
+        self.writeBoolean(False) # is time required to create new Band
         self.writeVInt(0) # unknown bruh
         self.writeVInt(self.player.coins_reward) # coins got
         self.writeVInt(self.player.trophies_reward) # trophies got
-        self.writeBool(False)
+        self.writeBoolean(False)
         self.writeVInt(self.player.control_mode) # Control Mode [0 - Tap to move, 1 - Joystick move, 2 - Double Joysticks (prototype)]
-        self.writeBool(self.player.has_battle_hints) # is battle hints enabled
+        self.writeBoolean(self.player.has_battle_hints) # is battle hints enabled
         self.writeVInt(self.player.coinsdoubler) # coins doubler coins remaining (0 = not activated)
         if self.player.coinsbooster - int(datetime.timestamp(datetime.now())) > 0:
             self.writeVInt(self.player.coinsbooster - int(datetime.timestamp(datetime.now()))) # coin boost secs remaining (0 = not activated)
@@ -52,13 +52,13 @@ class LogicDailyData:
             self.player.coinsbooster = int(datetime.timestamp(datetime.now()))
             db.replaceValue("coinsbooster", self.player.coinsbooster)
         self.writeVInt(self.settings["nextSeasonEndTimestamp"]-int(time()))
-        self.writeBool(False) # unknown
+        self.writeBoolean(False) # unknown
         self.writeDataReference(0, 1) # shop dataref (the id is 2)
         self.writeVInt(0)
         self.writeBoolean(True)
         self.writeBoolean(True)
-        self.writeArrayVInt([3, 2, 1, 3, 1]) # Brawler Upgrade Index
-        self.writeArrayVInt([1, 2, 3, 4, 8]) # Brawler Upgrade Power
-        self.writeArrayVInt(self.player.playerUpgrades) # owned upgrades
-        self.writeArrayVInt([20, 50, 120, 300, 1000]) # Brawler Upgrade Cost
+        self.encodeIntList([3, 2, 1, 3, 1]) # Brawler Upgrade Index
+        self.encodeIntList([1, 2, 3, 4, 8]) # Brawler Upgrade Power
+        self.encodeIntList(self.player.playerUpgrades) # owned upgrades
+        self.encodeIntList([20, 50, 120, 300, 1000]) # Brawler Upgrade Cost
         self.writeBoolean(False) # Name Changed State

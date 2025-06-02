@@ -18,7 +18,7 @@ class ClanStream(Writer):
                clubMessages = db.loadClubMessages(self.player.club_id)
           if clubMessages != None:
                msgCount = len(clubMessages["info"]["messages"])
-          self.writeVint(msgCount)  # Message count
+          self.writeVInt(msgCount)  # Message count
           #self.writeVInt(0)
 
           for index in range(msgCount):  # Loop through message indices
@@ -28,4 +28,4 @@ class ClanStream(Writer):
                self.writeVInt(message["EventType"])
                StreamEntryFactory.createStreamEntryByType(self, message)
           else:
-               self.writeVint(0)  # No messages
+               self.writeVInt(0)  # No messages
