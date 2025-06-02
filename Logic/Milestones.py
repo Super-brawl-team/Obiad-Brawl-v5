@@ -65,12 +65,12 @@ class Milestones:
             for x in range(1):
                 self.writeVInt(13) # Primary Level Up Reward Type
                 self.writeVInt(Milestones.PrimaryLvlUpRewardCount[MilestoneIndex]) # Primary Level Up Reward Count
-                self.writeScId(5, 1) # Primary Level Up Reward Resource
+                self.writeDataReference(5, 1) # Primary Level Up Reward Resource
             self.writeVInt(1) # Secondary Level Up Reward Count
             for x in range(1):
                 self.writeVInt(13) # Secondary Level Up Reward Type
                 self.writeVInt(Milestones.SecondaryLvlUpRewardCount[MilestoneIndex]) # Secondary Level Up Reward Count
-                self.writeScId(5, 1) # Secondary Level Up Reward Resource
+                self.writeDataReference(5, 1) # Secondary Level Up Reward Resource
     
         
         
