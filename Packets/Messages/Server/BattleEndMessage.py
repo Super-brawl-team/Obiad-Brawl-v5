@@ -120,7 +120,7 @@ class BattleEndMessage(Writer):
 		self.writeVInt(coins) # Coins Gained
 		self.writeVInt(6969) # "All Coins collected" if 0, its basically coins left
 		self.writeVInt(0) # First Win Coins Gained
-		self.writeBoole(False) # "All event experience collected" if True
+		self.writeBoolean(False) # "All event experience collected" if True
 		self.writeVInt(self.plrs["BattleRank"] if self.plrs["Gamemode"] in ("BattleRoyaleTeam", "BattleRoyale") else self.plrs["BattleEndType"]) # Result (Victory/Defeat/Draw/Rank Score)
 
 		self.writeVInt(trophies) # Trophies Result
