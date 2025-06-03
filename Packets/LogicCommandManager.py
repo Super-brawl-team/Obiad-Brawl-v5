@@ -10,16 +10,18 @@ from Packets.Commands.Client.LogicBuyCoinsDoublerCommand import LogicBuyCoinsDou
 from Packets.Commands.Client.LogicUnlockSkinCommand import LogicUnlockSkinCommand
 from Packets.Commands.Client.LogicHandleNotificationCommand import LogicHandleNotificationCommand
 from Packets.Commands.Client.LogicUpgradeBrawler import UpgradeBrawler
+from Packets.Commands.Client.LogicSelectSkinCommand import LogicSelectSkinCommand
 commands = {
     #203: LogicGiveDeliveryItemsCommand,
     500: LogicGatchaCommand,
     502: LogicBuyCardCommand,
-    506: LogicSetPlayerThumbnailCommand,
+    505: LogicSetPlayerThumbnailCommand,
+    506: LogicSelectSkinCommand,
     507: LogicUnlockSkinCommand,
     508: LogicSelectControlModeCommand,
-    59: LogicBuyCoinsDoublerCommand,
+    509: LogicBuyCoinsDoublerCommand,
     510: LogicBuyCoinsBoosterCommand,
-    #513: LogicSelectBattleHintsCommand, scrapped
+    #512: LogicSelectBattleHintsCommand, scrapped
     513: LogicBuyBrawlerCommand,
     514: LogicHandleNotificationCommand,
     516: UpgradeBrawler
