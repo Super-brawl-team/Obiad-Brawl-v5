@@ -43,6 +43,7 @@ class AllianceKickMessage(ByteStream):
                 MyAlliance(self.device, self.player).SendTo(id)
                 AllianceChatServer(self.device, self.player, self.player.club_id, nextKey+1).SendTo(id)
                 
-        self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"].club_id = 0
+        if str(self.targetID[1]) in self.device.ClientDict["Clients"]:
+            self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"].club_id = 0
         db.replaceOtherValue("club_id", 0, playerToken)
         MyAlliance(self.device, self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"]).SendTo(self.targetID[1])

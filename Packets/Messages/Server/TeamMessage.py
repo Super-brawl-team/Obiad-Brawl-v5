@@ -38,7 +38,7 @@ class TeamMessage(Writer):
             for player, values in gameroomInfo["players"].items():
                 playerToken = db.getTokenByLowId(gameroomInfo["players"][player]["low_id"])
                 playersData = (db.getSpecifiedPlayers([playerToken]))[0]
-                self.writeBoolean(player=="1") # is host
+                self.writeBoolean(gameroomInfo["players"][player]["host"]) # is host
                 self.writeLong(0, gameroomInfo["players"][player]["low_id"]) # Player ID
                 
                 self.writeString(gameroomInfo["players"][player]["name"]) # Player Name

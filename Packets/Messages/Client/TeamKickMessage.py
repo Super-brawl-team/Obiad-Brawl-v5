@@ -28,11 +28,15 @@ class TeamKickMessage(ByteStream):
         db.addGameroomMsg(self.player.teamID, 4, self.player.low_id, self.player.name, "", 104, self.targetID[1], self.player.name)
         tick = db.getNextGameroomKey(self.player.teamID)
         db.loadGameroom()
+        host = 0
+        for player_key, values in gameroomInfo["players"].items():
+                if values["host"]:
+                    host = int(player_key)
         for player_key, values in gameroomInfo["players"].items():
             if player_key != self.targetID[1]:
                 TeamStreamMessage(self.device, self.player, tick).SendTo(player_key)
                 TeamMessage(self.device, self.player).SendTo(player_key)
-        owner = db.getSpecifiedPlayers([db.getTokenByLowId(gameroomInfo["players"]["1"]["low_id"])])[0]
+        owner = db.getSpecifiedPlayers([db.getTokenByLowId(host)])[0]
         if owner["club_id"] == 0:
             return "passed"
         club =  db.loadClub(owner["club_id"])
@@ -42,6 +46,7 @@ class TeamKickMessage(ByteStream):
             self.plrids.append(memberData["low_id"])
         for id in self.plrids:
                 AllianceTeamsMessage(self.device, self.player).Send()
-
+        if str(self.targetID[1]) in self.device.ClientDict["Clients"]:
+            self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"].teamID = 0
         db.replaceOtherValue("teamID", 0, playerToken)
         

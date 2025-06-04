@@ -2,7 +2,7 @@ from Packets.Messages.Server.MyAlliance import MyAlliance
 from Utils.Reader import ByteStream
 from Logic.Player import Player
 from Database.DatabaseManager import DataBase
-import time
+import random
 from Packets.Messages.Server.AllianceEventMessage import AllianceEventMessage
 from Packets.Messages.Server.AllianceChatServer import AllianceChatServer
 class AllianceLeave(ByteStream):
@@ -22,12 +22,15 @@ class AllianceLeave(ByteStream):
         db = DataBase(self.player)
         # Removing member 
         club =  db.loadClub(self.player.club_id)
-
         if len(club["info"]["memberCount"]) == 1:
             db.addMember(self.player.club_id, self.player.token, 0)
 
         else:
             db.addMember(self.player.club_id, self.player.token, 2)
+            if self.player.club_role == 2:
+                selectedToken = random.choice([t for t in club["info"]["memberCount"] if t != self.player.token])
+                print(selectedToken)
+                db.replaceOtherValue("club_role", 2, selectedToken)
             db.addMsg(self.player.club_id, 4, self.player.low_id, self.player.name, self.player.club_role, "", 4, self.player.low_id, self.player.name)
             self.plrids = []
             nextKey = db.getNextKey(self.player.club_id)

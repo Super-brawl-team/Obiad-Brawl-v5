@@ -22,6 +22,10 @@ class AllianceTeamsMessage(Writer):
                 self.writeVInt(len(teams)) #count (max 3)
                 for x in teams:
                     gameroomInfo = db.getGameroomInfo("info", x)
+                    host = 0
+                    for player_key, values in gameroomInfo["players"].items():
+                            if values["host"]:
+                                host = int(player_key)
                     type = gameroomInfo["room_type"]
                     if Locations().GetGamemode(gameroomInfo["map_id"]) in ("Survival", "BossFight"):
                         type = 2
@@ -34,5 +38,5 @@ class AllianceTeamsMessage(Writer):
                     self.writeVInt(gameroomInfo["map_slot"][1]) # event index2 (mismatch with the index1 doesnt show the selected event and hides the coins left)
                     self.writeDataReference(15,gameroomInfo["map_id"]) # map
                     self.writeVInt(2 if gameroomInfo["advertiseToBand"] else 1) # unk (0: team disapear, 1: appears, 2+: players needed)
-                    owner = db.getSpecifiedPlayers([db.getTokenByLowId(gameroomInfo["players"]["1"]["low_id"])])[0]
+                    owner = db.getSpecifiedPlayers([db.getTokenByLowId(host)])[0]
                     self.writeString(owner["name"]) # name of the team owner

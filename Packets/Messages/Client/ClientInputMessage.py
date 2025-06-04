@@ -13,6 +13,8 @@ class ClientInputMessage(ByteStream):
 
     def decode(self):
         db = DataBase(self.player)
+        if self.player.battleID == 0:
+          return "uh no"
         battleInfo = db.getBattleInfo([self.player.battleID])[0]
         self.readVInt()
         self.readVInt()

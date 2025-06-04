@@ -33,7 +33,7 @@ class LogicConfData:
         self.writeVInt(9999) # Coin Limit Remaining
         self.encodeIntList([1,2,5,10,20,60]) # Duplicated Brawler Chips
         self.encodeIntList([3,10,20,60,200,500]) # Brawler Chip Cost
-        self.encodeIntList([15,30,80,170,350,700,2147483647]) # Boxes With Guaranteed Brawlers Cost
+        self.encodeIntList([0,30,80,170,350,0]) # Boxes With Guaranteed Brawlers Cost
         # Events array starts
 
         # Brawlers required for events starts

@@ -184,7 +184,7 @@ class BattleEndMessage(Writer):
 		for x in range(len(expList) - 1):
 			if expList[x] <= self.player.trophies < expList[x + 1]:
 				if expList[x+1 ] <= self.player.trophies + trophies < expList[x + 2]:
-					if x == self.player.trophieRank:
+					if x == self.player.trophieRank+1:
 						milestoneslevel += 1
 						self.player.trophieRank += 1
 						db.replaceValue("trophieRank", self.player.trophieRank)
@@ -264,8 +264,12 @@ class BattleEndMessage(Writer):
 		db.replaceValue("gold", self.player.gold)
 		self.player.coins_reward = coins+doubler+booster 
 		db.replaceValue("coins_reward", self.player.coins_reward)
-		self.player.solo_wins += 1
-		db.replaceValue("solo_wins", self.player.solo_wins)
+		if is_trio:
+			self.player.three_vs_three_wins += 1
+			db.replaceValue("three_vs_three_wins", self.player.three_vs_three_wins)
+		else:
+			self.player.solo_wins += 1
+			db.replaceValue("solo_wins", self.player.solo_wins)
 		if self.player.trophies > self.player.highest_trophies:
 			self.player.highest_trophies = self.player.trophies
 			db.replaceValue("highest_trophies", self.player.highest_trophies)

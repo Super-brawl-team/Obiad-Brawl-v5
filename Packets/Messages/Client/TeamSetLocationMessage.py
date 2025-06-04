@@ -21,9 +21,12 @@ class TeamSetLocationMessage(ByteStream):
        db.updateGameroomInfo(gameroomInfo["map_id"], self.player.teamID, "map_id")
        gameroomInfo["room_type"] = 1
        db.updateGameroomInfo(gameroomInfo["room_type"], self.player.teamID, "room_type")
+       host = 0
        for player_key, values in gameroomInfo["players"].items():
+            if values["host"]:
+                host = int(player_key)
             TeamMessage(self.device, self.player).SendTo(player_key)
-       owner = db.getSpecifiedPlayers([db.getTokenByLowId(gameroomInfo["players"]["1"]["low_id"])])[0]
+       owner = db.getSpecifiedPlayers([db.getTokenByLowId(host)])[0]
        if owner["club_id"] == 0:
            return "passed"
        club =  db.loadClub(owner["club_id"])

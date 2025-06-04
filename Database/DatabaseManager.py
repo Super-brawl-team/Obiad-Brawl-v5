@@ -260,7 +260,10 @@ class DataBase:
     def executeQuery(self, query, params=None):
         if params is None:
             params = []
-        self.cursor.execute(query, params)
+        try:
+            self.cursor.execute(query, params)
+        except:
+            print("[WARNING] Database is locked!")
         self.connection.commit()
 
     def fetchOne(self, query, params=None):
@@ -463,6 +466,8 @@ class DataBase:
             if action == 0:
                 deleteQuery = "DELETE FROM Clubs WHERE club_id = ?"
                 self.executeQuery(deleteQuery, [clubId])
+                deleteQuery = "DELETE FROM ClubChats WHERE club_id = ?"
+                self.executeQuery(deleteQuery, [clubId])
             elif action == 1:
                 clubData["info"]["memberCount"].append(playerToken)
                 clubData["info"]["onlineMembers"] += 1
@@ -582,7 +587,7 @@ class DataBase:
                 updated = True
             else:
                 next_monday = now + timedelta(days=(7 - now.weekday()))
-                next_monday = next_monday.replace(hour=0, minute=0, second=0, microsecond=0)
+                next_monday = next_monday.replace(hour=10, minute=0, second=0, microsecond=0)
                 current_events["3"]["TimeStamp"] = int(next_monday.timestamp())
 
         else:
@@ -590,7 +595,7 @@ class DataBase:
                 del current_events["3"]
                 updated = True
             next_saturday = now + timedelta(days=(5 - now.weekday()) % 7)
-            next_saturday = next_saturday.replace(hour=0, minute=0, second=0, microsecond=0)
+            next_saturday = next_saturday.replace(hour=10, minute=0, second=0, microsecond=0)
             next_events["3"] = {
             "ID": random.choice(Locations().getAllLocationsWithGamemode(["Survival", "BossFight"])),
             "Status": 2,
@@ -687,10 +692,13 @@ class DataBase:
             
             csvid.append(random.choice(BrawlersList))
         csvid.append(31)
+        hps = []
+        for x in csvid:
+            hps.append(Characters().characterHP(x))
         ultiArray = {str(i): copy.deepcopy({"unknown": True, "hasUlti": True, "ultiCharge": 1000}) for i in range(1, 7)}
         killArray = {str(i): copy.deepcopy({"score": 0, "entry": {}}) for i in range(1, 7)}
         objectInfos = {"x": 0, "y": 0, "index": 0, "z": 0, "visibilty": 10}
-        heroes = {str(i): copy.deepcopy({"objectInfos": {"x": defaultX[i-1], "y": defaultY[i-1], "index": i-1 if i<=3 else i+15, "z": 0, "visibility": 10}, "teamRotation": defaultAngle[i-1], "ennemyRotation": defaultAngle[i-1], "state": 0, "hasBall": False, "slowed": False, "unknown": False, "playingAnAnimation": True, "playedAnimation": 63, "rotationRelated": False, "stunned": False, "unknown2": False, "isPoisonned": False, "unknown3": 0, "unknown4": 0, "currentHP": 800, "maximumHP": 800, "itemsAmount": 0, "unknown5": 0, "unknown6": 0, "unknown7": False, "hasImmunityShield": False, "rotationRelated2": False, "hasRage": False, "ultiAiming": False, "activedUlti": False, "invisible": False, "notFullyVisible": False, "unknown8": 0, "unknown9": True, "unknown10": 0, "damagesArray": {}, "skillsArray": {"Weapon": {"activeTicks": 0, "unknown": False, "unknown1": 0, "ammos": 3000}, "Ulti": {"activeTicks": 0, "unknown": False, "unknown1": 0, "ammos": 3000}}}) for i in range(1, 7)}
+        heroes = {str(i): copy.deepcopy({"objectInfos": {"x": defaultX[i-1], "y": defaultY[i-1], "index": i-1 if i<=3 else i+15, "z": 0, "visibility": 10}, "teamRotation": defaultAngle[i-1], "ennemyRotation": defaultAngle[i-1], "state": 0, "hasBall": False, "slowed": False, "unknown": False, "playingAnAnimation": True, "playedAnimation": 63, "rotationRelated": False, "stunned": False, "unknown2": False, "isPoisonned": False, "unknown3": 0, "unknown4": 0, "currentHP": hps[i-1], "maximumHP": hps[i-1], "itemsAmount": 0, "unknown5": 0, "unknown6": 0, "unknown7": False, "hasImmunityShield": False, "rotationRelated2": False, "hasRage": False, "ultiAiming": False, "activedUlti": False, "invisible": False, "notFullyVisible": False, "unknown8": 0, "unknown9": True, "unknown10": 0, "damagesArray": {}, "skillsArray": {"Weapon": {"activeTicks": 0, "unknown": False, "unknown1": 0, "ammos": 3000}, "Ulti": {"activeTicks": 0, "unknown": False, "unknown1": 0, "ammos": 3000}}}) for i in range(1, 7)}
         projectiles = {str(i): copy.deepcopy({"objectInfos": objectInfos, "state": 0, "path": 992, "unknown": False}) for i in range(0)}
         characters = {str(i): copy.deepcopy({"objectInfos": {"x": 2550, "y": 4950, "index": i+102, "z": 0, "visibility": 10}}) for i in range(1,2)}
         items = {str(i): copy.deepcopy({"objectInfos": {"x": 2550, "y": 4950, "index": i+102, "z": 0, "visibility": 10}}) for i in range(0)}

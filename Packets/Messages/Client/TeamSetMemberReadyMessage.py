@@ -34,6 +34,11 @@ class TeamSetMemberReadyMessage(ByteStream):
         for player, values in gameroomInfo["players"].items():
             if not gameroomInfo["players"][player]["ready"]:
                 return "not yet"
+        for player, values in gameroomInfo["players"].items():
+            gameroomInfo["players"][player]["ready"] = False
+            db.updateGameroomPlayerInfo(int(player), self.player.teamID, gameroomInfo["players"][player])
+            gameroomInfo["players"][player]["status"] = 5
+            db.updateGameroomPlayerInfo(int(player), self.player.teamID, gameroomInfo["players"][player])
         TeamGameStartingMessage(self.device, self.player).Send()
         db.createBattleID()
         db.createMatchmakingData()
@@ -57,7 +62,9 @@ class TeamSetMemberReadyMessage(ByteStream):
                 matchmakingData["displayTIme"] = display_time
         """
         db.createBattle()
-        
+        for player, values in gameroomInfo["players"].items():
+            gameroomInfo["players"][player]["status"] = 1
+            db.updateGameroomPlayerInfo(int(player), self.player.teamID, gameroomInfo["players"][player])
         StartLoadingMessage(self.device, self.player).Send()
         
         self.settings = json.load(open('Settings.json'))
