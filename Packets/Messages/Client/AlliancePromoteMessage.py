@@ -53,5 +53,5 @@ class AlliancePromoteMessage(ByteStream):
             for id in self.plrids:
                     AllianceChatServer(self.device, self.player, self.player.club_id, nextKey+1).SendTo(id)
         # Sending confirmation and updated data
-        AllianceEventMessage(self.client, self.player, 81).Send()
-        AllianceEventMessage(self.client, self.player, 101).SendTo(self.targetID[1])
+        AllianceEventMessage(self.device, self.player, 81).Send()
+        AllianceEventMessage(self.device, self.player, 101).SendTo(self.targetID[1])

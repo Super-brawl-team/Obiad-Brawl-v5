@@ -27,9 +27,13 @@ class TeamCreateMessage(ByteStream):
         if self.slot2 > 0:
             eventData = db.loadEvents(1)["info"]["events"][str(self.slot2-1)]
             self.player.map_id = eventData["ID"]
+            mapSlot = [self.slot1, self.slot2]
+        else:
+            self.roomType = 1
+            mapSlot = [0,0]
         db.createGameroom(self.roomType, {"info": {"roomID": self.player.teamID, "messages": { "0": {"EventType": 4, "Event": 101, "Tick": 1, "PlayerID": self.player.low_id, "PlayerName": self.player.name, "Message": "", "promotedTeam": 0, "TimeStamp": time.time(), "targetID": self.player.low_id, "targetName": self.player.name}}}})
         gameroomInfo = db.getGameroomInfo("info")
-        gameroomInfo["map_slot"] = [self.slot1, self.slot2]
+        gameroomInfo["map_slot"] = mapSlot
         db.updateGameroomInfo(gameroomInfo["map_slot"], self.player.teamID, "map_slot")
         TeamMessage(self.device, self.player).Send()
         TeamStreamMessage(self.device, self.player).Send()

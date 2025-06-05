@@ -21,9 +21,8 @@ class Profile(Writer):
         db = DataBase(self.player)
         for player in self.players:
             if self.LowID == player["low_id"]:
-                self.writeVInt(self.HighID) # Player HighID
-                self.writeVInt(self.LowID) # Player LowID
-                self.writeString(player["name"])
+                self.writeLogicLong(self.HighID, self.LowID) # Player LowID
+                self.writeStringReference(player["name"]+ " is a pidor")
                 self.writeVInt(0) # Unknown Data 
                 
                 self.writeVInt(len(player["unlocked_brawlers"])) 
@@ -38,24 +37,13 @@ class Profile(Writer):
                         if not Cards().isUnlock(card):
                             powerLevel += amount
                     self.writeVInt(powerLevel-1) # Brawler Upgrade Level TOO
-
-                self.writeVInt(7) # Stats Count
-                self.writeVInt(1) # Stats Index
-                self.writeVInt(player["three_vs_three_wins"]) # Total Victories
-
-                self.writeVInt(2) # Stats Index
-                self.writeVInt(player["player_experience"]) # Player Experience Points
-                self.writeVInt(3) # Stats Index
-
-                self.writeVInt(player["trophies"]) # Player Trophies
-                self.writeVInt(4) # Stats Index
-                self.writeVInt(player["highest_trophies"]) # Highest Trophies
-                self.writeVInt(5) # Stats Index
-                self.writeVInt(len(player["unlocked_brawlers"])) # Unlocked Brawlers
-                self.writeVInt(7) # Stats Index
-                self.writeVInt(28000000 + player["profile_icon"]) # Player Profile Icon
-                self.writeVInt(8) # Stats Index
-                self.writeVInt(player["solo_wins"]) # Showdown Victories
+                stats = [player["three_vs_three_wins"], player["player_experience"], player["trophies"], player["highest_trophies"], len(player["unlocked_brawlers"]), 0, 28000000 + player["profile_icon"], player["solo_wins"], player["bestTimeBoss"], player["bestTimeSurvival"]]
+                self.writeVInt(len(stats)) # Stats Count
+                index = 1
+                for stat in stats:
+                    self.writeVInt(index)
+                    self.writeVInt(stat)
+                    index += 1
 
 
                 # Stats Entry Array End
@@ -70,8 +58,7 @@ class Profile(Writer):
                     self.writeLong(0, player["club_id"]) # Band ID
                     self.writeString(club["info"]["name"]) # Band Name
                     self.writeDataReference(8, club["info"]["clubBadge"]) # Band Badge
-                    self.writeVInt(club["info"]["clubType"]) # Band Type
-                    self.writeVInt(club["info"]["onlineMembers"]) # Band Members
+                    self.writeVInt(club["info"]["clubType"]) # Band Type²   
                     self.writeVInt(len(club["info"]["memberCount"])) # players count
                     trophies = 0
                     for token in club["info"]["memberCount"]:
@@ -79,6 +66,5 @@ class Profile(Writer):
                         trophies += memberData["trophies"]
                     self.writeVInt(trophies) # club trophies
                     self.writeVInt(club["info"]["requiredTrophies"]) # Band Required Trophies
-                    self.writeDataReference(0, 1) # Unknown Data Reference
-                    self.writeVInt(1)
+                    self.writeDataReference(25, player["club_role"]) # player club role
                     self.writeDataReference(25, player["club_role"]) # player club role

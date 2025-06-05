@@ -117,7 +117,9 @@ class DataBase:
             "homeNotifications": {},
             "playerUpgrades": [],
             "trophies_reward": 0,
-            "trophieRank": 1
+            "trophieRank": 1,
+            "bestTimeBoss": 0,
+            "bestTimeSurvival": 0
         }
 
         self.cursor.execute("INSERT INTO Players (token, data) VALUES (?, ?)", (self.player.token, json.dumps(data)))
@@ -262,9 +264,9 @@ class DataBase:
             params = []
         try:
             self.cursor.execute(query, params)
+            self.connection.commit()
         except:
             print("[WARNING] Database is locked!")
-        self.connection.commit()
 
     def fetchOne(self, query, params=None):
         if params is None:

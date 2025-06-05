@@ -34,8 +34,8 @@ class AllianceTeamsMessage(Writer):
                     self.writeVInt(len(gameroomInfo["players"])) # current amount of players
                     self.writeVInt(TeamMessage(self.device, self.player).getMaxPlayersForTeam(gameroomInfo["map_id"], gameroomInfo["room_type"])) # max players
                     self.writeLong(0,x) # team id
-                    self.writeVInt(gameroomInfo["map_slot"][0]) # event index1
-                    self.writeVInt(gameroomInfo["map_slot"][1]) # event index2 (mismatch with the index1 doesnt show the selected event and hides the coins left)
+                    self.writeVInt(gameroomInfo["map_slot"][0] if gameroomInfo["map_slot"][0] >= 0 else 0) # event index1
+                    self.writeVInt(gameroomInfo["map_slot"][1] if gameroomInfo["map_slot"][0] >= 0 else 0) # event index2 (mismatch with the index1 doesnt show the selected event and hides the coins left)
                     self.writeDataReference(15,gameroomInfo["map_id"]) # map
                     self.writeVInt(2 if gameroomInfo["advertiseToBand"] else 1) # unk (0: team disapear, 1: appears, 2+: players needed)
                     owner = db.getSpecifiedPlayers([db.getTokenByLowId(host)])[0]

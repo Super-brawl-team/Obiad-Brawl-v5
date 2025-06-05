@@ -46,12 +46,14 @@ class TeamLeaveMessage(ByteStream):
         TeamLeftMessage(self.device, self.player, 0).Send()
         if len(keys) != 0:
             owner = db.getSpecifiedPlayers([db.getTokenByLowId(host)])[0]
-            if owner["club_id"] == 0:
-                return "passed"
-            club =  db.loadClub(owner["club_id"])
-            self.plrids = []
-            for token in club["info"]["memberCount"]:
-                memberData = db.getMemberData(token)
-                self.plrids.append(memberData["low_id"])
-            for id in self.plrids:
-                    AllianceTeamsMessage(self.device, self.player).Send()
+        else:
+            owner = db.getSpecifiedPlayers([db.getTokenByLowId(self.player.low_id)])[0]
+        if owner["club_id"] == 0:
+            return "passed"
+        club =  db.loadClub(owner["club_id"])
+        self.plrids = []
+        for token in club["info"]["memberCount"]:
+            memberData = db.getMemberData(token)
+            self.plrids.append(memberData["low_id"])
+        for id in self.plrids:
+                AllianceTeamsMessage(self.device, self.player).Send()

@@ -46,4 +46,5 @@ class AllianceKickMessage(ByteStream):
         if str(self.targetID[1]) in self.device.ClientDict["Clients"]:
             self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"].club_id = 0
         db.replaceOtherValue("club_id", 0, playerToken)
-        MyAlliance(self.device, self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"]).SendTo(self.targetID[1])
+        if str(self.targetID[1]) in self.device.ClientDict["Clients"]:
+            MyAlliance(self.device, self.device.ClientDict["Clients"][str(self.targetID[1])]["Player"]).SendTo(self.targetID[1])

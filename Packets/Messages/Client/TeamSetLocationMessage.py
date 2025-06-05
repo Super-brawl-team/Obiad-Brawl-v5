@@ -21,6 +21,8 @@ class TeamSetLocationMessage(ByteStream):
        db.updateGameroomInfo(gameroomInfo["map_id"], self.player.teamID, "map_id")
        gameroomInfo["room_type"] = 1
        db.updateGameroomInfo(gameroomInfo["room_type"], self.player.teamID, "room_type")
+       gameroomInfo["map_slot"] = [0,0]
+       db.updateGameroomInfo(gameroomInfo["map_slot"], self.player.teamID, "map_slot")
        host = 0
        for player_key, values in gameroomInfo["players"].items():
             if values["host"]:

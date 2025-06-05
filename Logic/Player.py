@@ -10,6 +10,8 @@ class Player:
     usedVersion = 1
     name = "Brawler"
     eventCount = 4
+    bestTimeBoss = 0
+    bestTimeSurvival = 0
     highest_trophies = 0
     teamID = 0
     playerUpgrades = []
