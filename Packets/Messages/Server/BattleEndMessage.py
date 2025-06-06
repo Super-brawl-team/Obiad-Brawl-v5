@@ -268,14 +268,14 @@ class BattleEndMessage(Writer):
 			self.player.three_vs_three_wins += 1
 			db.replaceValue("three_vs_three_wins", self.player.three_vs_three_wins)
 		elif self.plrs["Gamemode"] == "Survival":
-			time = int(time.time() - self.player.ticketEventTimestamp)-5
-			if time > self.player.bestTimeSurvival:
-				self.player.bestTimeSurvival = time
+			timer = int(time.time() - self.player.ticketEventTimestamp)-5
+			if timer > self.player.bestTimeSurvival:
+				self.player.bestTimeSurvival = timer
 				db.replaceValue("bestTimeSurvival", self.player.bestTimeSurvival)
 		elif self.plrs["Gamemode"] == "BossFight":
-			time = int(time.time() - self.player.ticketEventTimestamp)-5
-			if time > self.player.bestTimeBoss:
-				self.player.bestTimeBoss = time
+			timer = int(time.time() - self.player.ticketEventTimestamp)-5
+			if timer > self.player.bestTimeBoss:
+				self.player.bestTimeBoss = timer
 			db.replaceValue("bestTimeBoss", self.player.bestTimeBoss)
 		else:
 			self.player.solo_wins += 1
