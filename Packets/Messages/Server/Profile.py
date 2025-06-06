@@ -22,7 +22,7 @@ class Profile(Writer):
         for player in self.players:
             if self.LowID == player["low_id"]:
                 self.writeLogicLong(self.HighID, self.LowID) # Player LowID
-                self.writeStringReference(player["name"]+ " is a pidor")
+                self.writeStringReference(player["name"])
                 self.writeVInt(0) # Unknown Data 
                 
                 self.writeVInt(len(player["unlocked_brawlers"])) 
